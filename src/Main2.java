@@ -15,16 +15,12 @@ public class Main2 {
         String path;
         ArrayList<String> myArrayList = new ArrayList<>();
         int limit = 0;
-        while (limit == 0) {
-            System.out.print("Enter path to file: ");
-            path = new Scanner(System.in).nextLine();
-            myArrayList.add(path);
-            if (!path.contains("C:") || path == "0" || path == null) {
-                int var = myArrayList.size() - 1;
-                myArrayList.remove(var);
-                break;
-            }
-        }
+        searchForPaths(myArrayList, limit);
+        analyseDocument(myArrayList);
+
+    }
+
+    private static void analyseDocument(ArrayList<String> myArrayList) throws IOException {
         for (int loop = 0; loop < myArrayList.size(); loop++) {
             String filePathName = myArrayList.get(loop);
 
@@ -88,46 +84,68 @@ public class Main2 {
             }
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             String qwertz;
-            for (int j = 0; j < words.length - 1; j++) {
-                if (j != notToControlWord) {
+            writeFile(myFile, notToControlWord, words);
 
-                    if (words[j].length() < 21) {
-                        qwertz = ("Invalid: " + words[j] + "  is too short(" + words[j].length() + "). Found at position: " + j + "\n");
-                        try (FileWriter fw = new FileWriter(myFile, true)) {
-                            fw.write(qwertz);
-                        } catch (IOException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
+        }
+    }
 
-                    if (words[j].length() > 21) {
-                        qwertz = ("Invalid: " + words[j] + "  is too long(" + words[j].length() + "). Found at position: " + j + "\n");
-                        try (FileWriter fw = new FileWriter(myFile, true)) {
-                            fw.write(qwertz);
-                        } catch (IOException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
 
-                    if (!words[j].contains("docnum") && !words[j].contains("contra")) {
-                        qwertz = ("Invalid: " + words[j] + " does not have a specification. " + words[j].length() + " pos: " + j + "\n");
-                        try (FileWriter fw = new FileWriter(myFile, true)) {
-                            fw.write(qwertz);
-                        } catch (IOException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                    if (!words[j].matches(".*[0-9].*")) {
-                        qwertz = ("Invalid: " + words[j] + "  does not contain numbers " + words[j].length() + " pos: " + j + "\n");
-                        try (FileWriter fw = new FileWriter(myFile, true)) {
-                            fw.write(qwertz);
-                        } catch (IOException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-
-                }
+    static void searchForPaths(ArrayList<String> myArrayList, int limit) {
+        String path;
+        while (limit == 0) {
+            System.out.print("Enter path to file: ");
+            path = new Scanner(System.in).nextLine();
+            myArrayList.add(path);
+            if (!path.contains("C:") || path == "0" || path == null) {
+                int var = myArrayList.size() - 1;
+                myArrayList.remove(var);
+                break;
             }
         }
     }
+
+    static void writeFile(File myFile, int notToControlWord, String[] words) {
+        String qwertz;
+        for (int j = 0; j < words.length - 1; j++) {
+            if (j != notToControlWord) {
+
+                if (words[j].length() < 21) {
+                    qwertz = ("Invalid: " + words[j] + "  is too short(" + words[j].length() + "). Found at position: " + j + "\n");
+                    try (FileWriter fw = new FileWriter(myFile, true)) {
+                        fw.write(qwertz);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                if (words[j].length() > 21) {
+                    qwertz = ("Invalid: " + words[j] + "  is too long(" + words[j].length() + "). Found at position: " + j + "\n");
+                    try (FileWriter fw = new FileWriter(myFile, true)) {
+                        fw.write(qwertz);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                if (!words[j].contains("docnum") && !words[j].contains("contra")) {
+                    qwertz = ("Invalid: " + words[j] + " does not have a specification. " + words[j].length() + " pos: " + j + "\n");
+                    try (FileWriter fw = new FileWriter(myFile, true)) {
+                        fw.write(qwertz);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                if (!words[j].matches(".*[0-9].*")) {
+                    qwertz = ("Invalid: " + words[j] + "  does not contain numbers " + words[j].length() + " pos: " + j + "\n");
+                    try (FileWriter fw = new FileWriter(myFile, true)) {
+                        fw.write(qwertz);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+            }
+        }
     }
+
+}
